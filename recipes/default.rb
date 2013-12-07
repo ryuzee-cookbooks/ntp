@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: cron 
+# Cookbook Name:: ntp 
 # Recipe:: default 
 #
 # Author:: Ryuzee <ryuzee@gmail.com>
@@ -13,7 +13,7 @@ include_recipe "cron"
 
 case node[:platform]
 when "centos", "amazon", "ubuntu"
-  package "ntp" do
+  package "ntpdate" do
     action :install
   end
 
