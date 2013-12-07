@@ -9,24 +9,34 @@
 # This software is released under the MIT License.
 # http://opensource.org/licenses/mit-license.php
 
-include_recipe "cron"
-
 case node[:platform]
-when "centos", "amazon", "ubuntu"
-  package "ntpdate" do
+when "centos", "amazon"
+
+  yum_package "cronie" do
     action :install
+    flush_cache [:before]
+  end
+
+  yum_package "ntpdate" do
+    action :install
+    flush_cache [:before]
   end
 
   cmd = "/usr/sbin/ntpdate #{node["ntp"]["target"]}"
-  e = execute cmd do
-    action :run
-  end
 
-  cron_d "ntpdate" do
+  cron "ntpdate" do
     minute node["ntp"]["minute"]
     hour   node["ntp"]["hour"]
+    day    node["ntp"]["day"]
+    month  node["ntp"]["month"]
+    weekday node["ntp"]["weekday"]
     command cmd
     user "root"
+    action :create
+  end
+
+  e = execute cmd do
+    action :run
   end
 end
 
