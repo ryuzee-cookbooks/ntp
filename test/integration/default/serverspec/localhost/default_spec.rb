@@ -9,13 +9,12 @@ RSpec.configure do |c|
   c.path = "/sbin:/usr/sbin"
 end
 
-describe package('ntpdate') do
+describe package('ntp') do
   it { should be_installed }
 end
 
 describe file('/usr/sbin/ntpdate') do
   it { should be_file }
-  it { should be_mode 755 }
 end
 
 describe cron do

@@ -12,12 +12,14 @@
 case node[:platform]
 when "centos", "amazon"
 
-  yum_package "cronie" do
+  node["platform_version"].to_f >= 6.0 ? p = 'cronie' : p = 'vixie-cron'
+
+  yum_package p do
     action :install
     flush_cache [:before]
   end
 
-  yum_package "ntpdate" do
+  yum_package "ntp" do
     action :install
     flush_cache [:before]
   end
