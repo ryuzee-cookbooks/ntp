@@ -24,22 +24,27 @@ when "centos", "amazon"
     flush_cache [:before]
   end
 
-  cmd = "/usr/sbin/ntpdate #{node["ntp"]["target"]}"
-
-  cron "ntpdate" do
-    minute node["ntp"]["minute"]
-    hour   node["ntp"]["hour"]
-    day    node["ntp"]["day"]
-    month  node["ntp"]["month"]
-    weekday node["ntp"]["weekday"]
-    command cmd
-    user "root"
-    action :create
+when "ubuntu", "debian"
+  package "ntpdate" do
+    action :install
   end
+end
 
-  e = execute cmd do
-    action :run
-  end
+cmd = "/usr/sbin/ntpdate #{node["ntp"]["target"]}"
+
+cron "ntpdate" do
+  minute node["ntp"]["minute"]
+  hour   node["ntp"]["hour"]
+  day    node["ntp"]["day"]
+  month  node["ntp"]["month"]
+  weekday node["ntp"]["weekday"]
+  command cmd
+  user "root"
+  action :create
+end
+
+e = execute cmd do
+  action :run
 end
 
 # vim: filetype=ruby.chef
