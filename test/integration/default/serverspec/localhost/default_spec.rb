@@ -9,8 +9,14 @@ RSpec.configure do |c|
   c.path = "/sbin:/usr/sbin"
 end
 
-describe package('ntp') do
-  it { should be_installed }
+if os[:family] == 'Ubuntu'
+  describe package('ntpdate') do
+    it { should be_installed }
+  end
+elsif os[:family] == 'RedHat'
+  describe package('ntp') do
+    it { should be_installed }
+  end
 end
 
 describe file('/usr/sbin/ntpdate') do

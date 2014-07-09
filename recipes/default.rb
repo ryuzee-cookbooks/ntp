@@ -25,6 +25,9 @@ when "centos", "amazon"
   end
 
 when "ubuntu", "debian"
+  package "cron" do
+    action :install
+  end
   package "ntpdate" do
     action :install
   end
