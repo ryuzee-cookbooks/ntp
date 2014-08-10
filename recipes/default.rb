@@ -48,6 +48,7 @@ end
 
 e = execute cmd do
   action :run
+  not_if {"ps -ef | grep ntpd"}
 end
 
 # vim: filetype=ruby.chef
