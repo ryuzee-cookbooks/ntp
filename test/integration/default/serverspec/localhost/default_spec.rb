@@ -1,19 +1,10 @@
-require 'serverspec'
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
+require 'spec_helper'
 
-RSpec.configure do |c|
-  c.before :all do
-    c.os = backend(Serverspec::Commands::Base).check_os
-  end
-  c.path = "/sbin:/usr/sbin"
-end
-
-if os[:family] == 'Ubuntu'
+if os[:family] == 'ubuntu'
   describe package('ntpdate') do
     it { should be_installed }
   end
-elsif os[:family] == 'RedHat'
+elsif os[:family] == 'redhat'
   describe package('ntp') do
     it { should be_installed }
   end
