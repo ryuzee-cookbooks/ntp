@@ -10,45 +10,45 @@
 # http://opensource.org/licenses/mit-license.php
 
 case node[:platform]
-when "centos", "amazon"
+when 'centos', 'amazon'
 
-  node["platform_version"].to_f >= 6.0 ? p = 'cronie' : p = 'vixie-cron'
+  node['platform_version'].to_f >= 6.0 ? p = 'cronie' : p = 'vixie-cron'
 
   yum_package p do
     action :install
     flush_cache [:before]
   end
 
-  yum_package "ntp" do
+  yum_package 'ntp' do
     action :install
     flush_cache [:before]
   end
 
-when "ubuntu", "debian"
-  package "cron" do
+when 'ubuntu', 'debian'
+  package 'cron' do
     action :install
   end
-  package "ntpdate" do
+  package 'ntpdate' do
     action :install
   end
 end
 
-cmd = "/usr/sbin/ntpdate #{node["ntp"]["target"]}"
+cmd = "/usr/sbin/ntpdate #{node['ntp']['target']}"
 
-cron "ntpdate" do
-  minute node["ntp"]["minute"]
-  hour   node["ntp"]["hour"]
-  day    node["ntp"]["day"]
-  month  node["ntp"]["month"]
-  weekday node["ntp"]["weekday"]
+cron 'ntpdate' do
+  minute node['ntp']['minute']
+  hour   node['ntp']['hour']
+  day    node['ntp']['day']
+  month  node['ntp']['month']
+  weekday node['ntp']['weekday']
   command cmd
-  user "root"
+  user 'root'
   action :create
 end
 
-e = execute cmd do
+execute cmd do
   action :run
-  not_if {"ps -ef | grep ntpd"}
+  not_if {'ps -ef | grep ntpd'}
 end
 
 # vim: filetype=ruby.chef
