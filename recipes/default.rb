@@ -25,6 +25,7 @@ when 'centos', 'amazon'
   end
 
 when 'ubuntu', 'debian'
+  include_recipe "apt"
   package 'cron' do
     action :install
   end
